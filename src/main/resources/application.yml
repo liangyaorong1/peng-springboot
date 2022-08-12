@@ -1,0 +1,52 @@
+server:
+  port: 8070
+spring:
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:p6spy:mysql://localhost:3306/students-second?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 333
+  cache:
+    cache-names: redisCache
+    redis:
+      cache-null-values: true
+      time-to-live: 600000ms
+      use-key-prefix: true
+  mail:
+    host: smtp.qq.com
+    username: 291848819@qq.com  # ????
+    password: thtpcsweveodbgbb # ???
+    default-encoding: utf-8
+  redis:
+    database: 0
+    host: localhost
+    password:
+    port: 6379
+    timeout: 6000
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: -1
+        max-idle: 8
+        min-idle: 0
+
+peng:
+  jwt:
+    secret: f4e2e52034348f86b67cde581c0f9eb5
+    expire: 604800
+    header: Authorization
+
+ten:
+  oss:
+    secretId: AKIDtc6LK9j4B4i6F9oHWXKr8AxUmob9SWKt
+    secretKey: MSJvIPHvKTN1QZT7WfbJm0ygFYbPxGK8
+    region: ap-nanjing
+    photoBucket: second-1312767185
+    path: https://second-1312767185.cos.ap-nanjing.myqcloud.com
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  type-aliases-package: com.peng.entity
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

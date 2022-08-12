@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peng.mapper.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.peng.entity.Order">
+        <id column="id" property="id" />
+        <result column="userId" property="userId" />
+        <result column="order_name" property="orderName" />
+        <result column="order_price" property="orderPrice" />
+        <result column="order_url" property="orderUrl" />
+        <result column="order_num" property="orderNum" />
+        <result column="created" property="created" />
+        <result column="status" property="status" />
+        <result column="order_content" property="orderContent" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, userId, order_name, order_price, order_url, order_num, created, status, order_content
+    </sql>
+
+    <update id="updateStatus">
+        update orders set status=1 where id=#{id}
+    </update>
+
+</mapper>

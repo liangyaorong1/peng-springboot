@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peng.mapper.GoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+<!--    <resultMap id="BaseResultMap" type="com.peng.entity.vo.GoodVo">-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="userId" property="userId" />-->
+<!--        <result column="username" property="username" />-->
+<!--        <result column="good_content" property="goodContent" />-->
+<!--        <result column="good_url" property="goodUrl" />-->
+<!--        <result column="good_price" property="goodPrice" />-->
+<!--        <result column="good_num" property="goodNum" />-->
+<!--        <result column="good_address" property="goodAddress" />-->
+<!--        <result column="good_name" property="goodName" />-->
+<!--        <result column="deleted" property="deleted" />-->
+<!--        <result column="created" property="created" />-->
+<!--    </resultMap>-->
+
+    <!-- 通用查询结果列 -->
+
+    <select id="queryAll" resultType="GoodsVo">
+        select * from goods g,user u where g.deleted=0 and u.id=g.userId
+        <include refid="whereQuery"></include>
+    </select>
+
+    <select id="queryItem" resultType="GoodsVo">
+        select * from goods g,user u where g.deleted=0 and u.id=g.userId and g.id=#{id}
+    </select>
+
+    <sql id="whereQuery">
+        <if test="ew!=null">
+            <if test="ew.searchText!=null and ew.searchText.length()>0">
+               and  g.goods_name like "%${ew.searchText}%" or g.deleted=0 and u.id=g.userId and u.nick_name like "%${ew.searchText}%"
+            </if>
+        </if>
+        order by g.created desc
+    </sql>
+</mapper>

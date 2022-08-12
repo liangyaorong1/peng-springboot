@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peng.mapper.ChatMapper">
+
+    <!-- 通用查询映射结果 -->
+    <!--    <resultMap id="BaseResultMap" type="com.peng.entity.vo.ChatVo">-->
+    <!--        <id column="id" property="id" />-->
+    <!--        <result column="goodsId" property="goodsId" />-->
+    <!--        <result column="from" property="from" />-->
+    <!--        <result column="to" property="to" />-->
+    <!--        <result column="msg" property="msg" />-->
+    <!--        <result column="time" property="time" />-->
+    <!--    </resultMap>-->
+
+    <!--    &lt;!&ndash; 通用查询结果列 &ndash;&gt;-->
+    <!--    <sql id="Base_Column_List">-->
+    <!--        id, goodsId, from, to, msg, time-->
+    <!--    </sql>-->
+
+    <select id="queryByCreated" resultType="ChatVo">
+        select ANY_VALUE(c.goodsId) goodsId,c.to_name toName,ANY_VALUE(c.from_name) fromName,ANY_VALUE(c.msg) msg,ANY_VALUE(c.created) created,ANY_VALUE(c.last_time) lastTime,ANY_VALUE(c.url) url from(select to_name,goodsId,from_name,msg,created,last_time,url from chat order by created desc limit 99)c where c.goodsId=#{goodsId}  group by c.to_name
+    </select>
+
+    <select id="queryGroupByGoodsId" resultType="ChatVo">
+						SELECT
+					c.goodsId goodsId,
+					ANY_VALUE (
+					CASE c.to_name
+					WHEN #{name} THEN
+						c.from_name
+					ELSE
+						c.to_name
+					END
+					) toName,
+					ANY_VALUE (#{name}) fromName,
+					ANY_VALUE (c.msg) msg,
+					ANY_VALUE (c.created) created,
+					ANY_VALUE (c.last_time) lastTime,
+					ANY_VALUE (c.url) url
+				FROM
+					(
+						SELECT
+							to_name,
+							goodsId,
+							from_name,
+							msg,
+							created,
+							last_time,
+							url
+						FROM
+							chat
+					  where (from_name = #{name} or to_name = #{name})
+						ORDER BY
+							created DESC
+						LIMIT 99
+					) c
+				GROUP BY
+					c.goodsId
+    </select>
+
+    <select id="queryAll" resultType="ChatVo">
+         select * from chat c where c.goodsId= #{goodsId}  and((to_name = #{toName} and from_name = #{fromName} )or (from_name = #{toName} and to_name = #{fromName} ))  ORDER BY created
+    </select>
+</mapper>

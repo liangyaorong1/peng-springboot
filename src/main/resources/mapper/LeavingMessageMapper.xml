@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.peng.mapper.LeavingMessageMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.peng.entity.vo.LeavingMessageVo">
+        <id column="id" property="id" />
+        <result column="nick_name" property="nickName"/>
+        <result column="content" property="content" />
+        <result column="created" property="created" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+<!--    <sql id="Base_Column_List">-->
+<!--        id, userId, goodId, content, created-->
+<!--    </sql>-->
+
+    <select id="queryAll" resultType="LeavingMessageVo">
+        select distinct u.nick_name nickName,c.content content,c.created created from leaving_message c,goods g,user u where c.userId=u.id and c.goodsId=${goodsId} order by c.created desc
+    </select>
+
+
+</mapper>
